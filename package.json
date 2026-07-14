@@ -1,34 +1,62 @@
 {
   "name": "code-radar",
   "version": "1.0.0",
-  "description": "CLI that scans your package.json and surfaces major package/framework news with source links",
+  "description": "Weekly package news for your stack — with source links",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "code-radar": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "assets/hero.svg",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsup",
+    "clean": "rm -rf dist",
     "start": "tsx src/index.ts",
     "dev": "tsx src/index.ts",
-    "radar": "tsx src/index.ts"
+    "radar": "tsx src/index.ts",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn typecheck && yarn build",
+    "release": "release-it",
+    "release:dry": "release-it --dry-run"
   },
   "keywords": [
     "cli",
+    "code-radar",
     "dependencies",
-    "news",
+    "package-news",
     "changelog",
-    "openai"
+    "npm",
+    "openai",
+    "developer-tools",
+    "typescript"
   ],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watadarkstar/code-radar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/watadarkstar/code-radar/issues"
+  },
+  "homepage": "https://github.com/watadarkstar/code-radar#readme",
+  "author": "Adrian Carolli <adrian.caarolli@gmail.com> (https://github.com/watadarkstar)",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
     "openai": "^6.46.0"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "release-it": "^20.2.0",
     "tslib": "^2.8.1",
     "tsup": "^8.5.1",
     "tsx": "^4.22.4",

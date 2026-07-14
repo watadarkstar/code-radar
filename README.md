@@ -1,16 +1,35 @@
-# Code Radar
-
 <p align="center">
   <img src="./assets/hero.svg" alt="Code Radar — package news for your codebase" width="100%" />
 </p>
 
+<h3 align="center">
+  Code Radar
+</h3>
+
 <p align="center">
-  <strong>A CLI that scans your project and surfaces major package news — with links.</strong>
+  Weekly package news for <em>your</em> stack — with source links.<br/>
+  Scan <code>package.json</code>, detect your frameworks, get major release headlines that matter.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/code-radar">
+    <img alt="npm version" src="https://badge.fury.io/js/code-radar.svg?icon=si%3Anpm"/>
+  </a>
+  <a title="License" href="https://github.com/watadarkstar/code-radar/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
+  </a>
+  <a href="https://nodejs.org/">
+    <img alt="node" src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://x.com/icookandcode" target="_blank">
+    Need help building developer tools? Connect with Adrian on X
+  </a>
 </p>
 
 ---
-
-Code Radar looks at your `package.json` and source tree, detects the stack you actually use (TypeScript, Expo, React Native, Next.js, Drizzle, and more), then pulls **major** framework and library news via OpenAI web search. Each item includes why it matters for *your* repo and links to the original sources.
 
 ```
 🔍 Scanning your project...
@@ -42,124 +61,139 @@ Worth testing.
 ──────────────
 ```
 
-## Prerequisites
+## Features
+
+- Detects your stack from `package.json` (TypeScript, Expo, React Native, Next.js, Drizzle, and more)
+- Looks up latest versions on npm
+- Uses OpenAI web search for **major** package/framework news
+- Source links on every item (blogs, changelogs, GitHub Releases)
+- Saves your OpenAI API key locally (`~/.code-radar/`) and protects project `.gitignore`
+
+Code Radar focuses on major news — not security audits or CVE noise.
+
+## Requirements
 
 - **Node.js** 20 or later
-- **Yarn** (Classic v1 is fine)
 - An **OpenAI API key** with access to the Responses API + web search
 
-## Setup
+## Installation
 
-1. Clone the repository and install dependencies:
-
-```bash
-yarn install
-```
-
-2. Save your OpenAI API key (one-time prompt; stored locally):
+Using npm:
 
 ```bash
-yarn start config
+npm install -g code-radar
 ```
 
-The key is written to `~/.code-radar/config.json` with restrictive file permissions. You can also set `OPENAI_API_KEY` in your environment for a one-off run without saving.
+Using yarn:
+
+```bash
+yarn global add code-radar
+```
+
+Or run once without installing:
+
+```bash
+npx code-radar
+```
+
+## Usage
+
+From any Node project directory:
+
+```bash
+code-radar
+```
+
+First run prompts for your OpenAI API key (saved to `~/.code-radar/config.json`). You can also set `OPENAI_API_KEY` in the environment.
+
+```bash
+code-radar config          # save / update API key
+code-radar config --show   # check if a key is configured
+code-radar config --clear  # remove saved key
+code-radar --help
+```
+
+### What happens on each run
+
+1. **Scan** — nearest `package.json`, known frameworks, source file counts  
+2. **Registry** — latest versions on npm for detected packages  
+3. **News** — OpenAI web search for major announcements  
+4. **Report** — why it matters, recommendation, and source URLs  
+5. **Safety** — appends `.code-radar/` to the project `.gitignore` if missing  
 
 ### Config & environment
 
 | Variable / path | Required | Description |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | Yes* | OpenAI API key. Overrides the saved key when set. Get one at [platform.openai.com](https://platform.openai.com/api-keys). |
+| `OPENAI_API_KEY` | Yes* | Overrides the saved key when set. [Get a key](https://platform.openai.com/api-keys). |
 | `OPENAI_MODEL` | No | Model name (default: `gpt-4.1-mini`). |
-| `~/.code-radar/config.json` | — | Local config file where the API key is saved after `yarn start config`. |
+| `~/.code-radar/config.json` | — | Where the API key is stored after `code-radar config`. |
 
-\*Required either as env var or saved via `yarn start config`.
+\*Required either as env var or via `code-radar config`.
 
-```bash
-# Inspect whether a key is configured (does not print the secret)
-yarn start config --show
-
-# Clear the saved key
-yarn start config --clear
-```
-
-## Build
-
-Compile TypeScript to `dist/` with tsup:
+## Local development
 
 ```bash
-yarn build
+git clone https://github.com/watadarkstar/code-radar.git
+cd code-radar
+yarn install
+yarn start          # run via tsx
+yarn build          # emit dist/
+yarn typecheck
 ```
 
-This produces CommonJS + ESM bundles and type declarations under `dist/`. The CLI entry is `dist/index.js` (`bin`: `code-radar`).
-
-## Run
-
-From any Node project directory (or this repo):
-
-```bash
-yarn start
-```
-
-Or:
-
-```bash
-yarn radar
-yarn dev
-```
-
-After a build you can also run the compiled binary:
-
-```bash
-node dist/index.js
-# or, if linked:
-code-radar
-```
-
-### What happens on each run
-
-1. **Scan** — finds the nearest `package.json`, detects known frameworks, counts source files  
-2. **Registry check** — looks up latest versions on npm for detected packages  
-3. **News search** — asks OpenAI (with web search) for major package/framework announcements  
-4. **Report** — prints a short radar with summaries, “why you should care,” recommendations, and source URLs  
-
-Code Radar focuses on **major news** (releases, changelogs, official blog posts). It does **not** run security audits or surface CVE noise.
-
-## Commands
-
-| Command | Description |
+| Script | Description |
 | --- | --- |
-| `yarn start` | Run the news radar for the current project |
-| `yarn start config` | Prompt and save your OpenAI API key |
-| `yarn start config --show` | Show whether a key is configured |
-| `yarn start config --clear` | Remove the saved API key |
-| `yarn start --help` | Print CLI help |
-| `yarn typecheck` | Typecheck with `tsc --noEmit` |
+| `yarn start` / `yarn radar` / `yarn dev` | Run the CLI from source |
 | `yarn build` | Build with tsup → `dist/` |
-
-## Project layout
-
-```
-code-radar/
-  assets/
-    hero.svg          # README hero (placeholder — replace anytime)
-  src/
-    index.ts          # CLI entry
-    config.ts         # API key storage (~/.code-radar)
-    scan.ts           # package.json + codebase detection
-    versions.ts       # npm registry lookups
-    analyze.ts        # OpenAI web search + report generation
-    format.ts         # Terminal output
-  dist/               # Build output
-  tsup.config.ts
-  tsconfig.json
-```
-
-## Tips
-
-- Run Code Radar from the **root of the app you care about** so it picks up that project’s `package.json`.
-- Prefer official sources in the report (TypeScript blog, Expo changelog, React blog, GitHub Releases, etc.).
-- If web search is unavailable, the CLI falls back to npm version drift plus known official blog/changelog homes for your stack.
+| `yarn typecheck` | `tsc --noEmit` |
+| `yarn clean` | Remove `dist/` |
+| `yarn release:dry` | Dry-run a release |
+| `yarn release` | Version, tag, GitHub release, publish to npm |
 
 ## License
 
-ISC
+[MIT](LICENSE)
+
+## Author
+
+Feel free to ask me questions on Twitter [@icookandcode](https://www.twitter.com/icookandcode)!
+
+## Contributors
+
+Submit a PR to contribute :)
+
+## Release
+
+We use [`release-it`](https://github.com/release-it/release-it) to version, tag, create a GitHub release, and publish to npm.
+
+Prerequisites:
+
+1. Logged into npm: `npm login`
+2. `GH_TOKEN` (or `GITHUB_TOKEN`) with repo access if you want GitHub releases
+3. Clean git working tree on the default branch
+
+Then:
+
+```bash
+yarn run release:dry
+yarn run release
+```
+
+`release:dry` prints what would happen without publishing. `release` bumps the version, runs typecheck + build, commits/tags, creates a GitHub release, and publishes `code-radar` to the npm registry.
+
+---
+
+<div align="center">
+
+**Stay ahead of your stack.**
+
+⭐ **Star this repo** • 💬 **[Contact Adrian](https://x.com/icookandcode)**
+
+_Built with ❤️ by [Adrian](https://x.com/icookandcode)_
+
+</div>
+
+---
+
+**Keywords:** cli, code-radar, package news, dependencies, changelog, npm, openai, typescript, developer-tools
