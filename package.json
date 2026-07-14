@@ -1,6 +1,6 @@
 {
   "name": "code-radar",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Weekly package news for your stack — with source links",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
