@@ -4,43 +4,56 @@ import os from "node:os";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
-export type CodeRadarConfig = {
+export type PackageRadarConfig = {
   openaiApiKey?: string;
 };
 
-const CONFIG_DIR = path.join(os.homedir(), ".code-radar");
+const CONFIG_DIR = path.join(os.homedir(), ".package-radar");
 const CONFIG_PATH = path.join(CONFIG_DIR, "config.json");
+/** Legacy path from earlier code-radar naming — still read as a fallback */
+const LEGACY_CONFIG_PATH = path.join(
+  os.homedir(),
+  ".code-radar",
+  "config.json",
+);
 
 /** Entry appended to a project's .gitignore so local key/config never gets committed */
-export const GITIGNORE_SECRETS_ENTRY = ".code-radar/";
+export const GITIGNORE_SECRETS_ENTRY = ".package-radar/";
 
 const GITIGNORE_SECRETS_COMMENT =
-  "# OpenAI / code-radar secrets — never commit API keys";
+  "# OpenAI / package-radar secrets — never commit API keys";
+
+const GITIGNORE_MATCHES = new Set([
+  ".package-radar",
+  ".package-radar/",
+  ".package-radar/**",
+  "**/.package-radar",
+  "**/.package-radar/",
+  "**/.package-radar/**",
+  // legacy name
+  ".code-radar",
+  ".code-radar/",
+  ".code-radar/**",
+  "**/.code-radar",
+  "**/.code-radar/",
+  "**/.code-radar/**",
+]);
 
 export function getConfigPath(): string {
   return CONFIG_PATH;
 }
 
-function gitignoreAlreadyIgnoresCodeRadar(content: string): boolean {
+function gitignoreAlreadyIgnoresSecrets(content: string): boolean {
   for (const line of content.split(/\r?\n/)) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#")) continue;
-    if (
-      trimmed === ".code-radar" ||
-      trimmed === ".code-radar/" ||
-      trimmed === ".code-radar/**" ||
-      trimmed === "**/.code-radar" ||
-      trimmed === "**/.code-radar/" ||
-      trimmed === "**/.code-radar/**"
-    ) {
-      return true;
-    }
+    if (GITIGNORE_MATCHES.has(trimmed)) return true;
   }
   return false;
 }
 
 /**
- * Ensures the project's `.gitignore` ignores `.code-radar/` (local API key / config).
+ * Ensures the project's `.gitignore` ignores `.package-radar/` (local API key / config).
  * Appends the entry at the end if missing. Creates `.gitignore` when needed.
  */
 export async function ensureGitignoreHasSecretsEntry(
@@ -59,7 +72,7 @@ export async function ensureGitignoreHasSecretsEntry(
     if (code !== "ENOENT") throw err;
   }
 
-  if (gitignoreAlreadyIgnoresCodeRadar(content)) {
+  if (gitignoreAlreadyIgnoresSecrets(content)) {
     return { updated: false, gitignorePath };
   }
 
@@ -76,16 +89,22 @@ export async function ensureGitignoreHasSecretsEntry(
   return { updated: true, gitignorePath };
 }
 
-export async function loadConfig(): Promise<CodeRadarConfig> {
+export async function loadConfig(): Promise<PackageRadarConfig> {
   try {
     const raw = await fs.readFile(CONFIG_PATH, "utf8");
-    return JSON.parse(raw) as CodeRadarConfig;
+    return JSON.parse(raw) as PackageRadarConfig;
   } catch {
-    return {};
+    // Fall back to legacy ~/.code-radar/config.json if present
+    try {
+      const raw = await fs.readFile(LEGACY_CONFIG_PATH, "utf8");
+      return JSON.parse(raw) as PackageRadarConfig;
+    } catch {
+      return {};
+    }
   }
 }
 
-export async function saveConfig(config: CodeRadarConfig): Promise<void> {
+export async function saveConfig(config: PackageRadarConfig): Promise<void> {
   await fs.mkdir(CONFIG_DIR, { recursive: true, mode: 0o700 });
   await fs.writeFile(CONFIG_PATH, `${JSON.stringify(config, null, 2)}\n`, {
     mode: 0o600,
@@ -107,7 +126,7 @@ export async function resolveApiKey(options?: {
   try {
     const key = (
       await rl.question(
-        "Enter your OpenAI API key (saved to ~/.code-radar/config.json): ",
+        "Enter your OpenAI API key (saved to ~/.package-radar/config.json): ",
       )
     ).trim();
 

@@ -3,6 +3,8 @@ dist/
 .env
 .DS_Store
 *.log
+*.tgz
 
-# OpenAI / code-radar secrets — never commit API keys
+# OpenAI / package-radar secrets — never commit API keys
+.package-radar/
 .code-radar/

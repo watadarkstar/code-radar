@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="./assets/hero.svg" alt="Code Radar — package news for your codebase" width="100%" />
+  <img src="./assets/hero.svg" alt="Package Radar — package news for your codebase" width="100%" />
 </p>
 
 <h3 align="center">
-  Code Radar
+  Package Radar
 </h3>
 
 <p align="center">
@@ -12,8 +12,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/code-radar">
-    <img alt="npm version" src="https://badge.fury.io/js/code-radar.svg?icon=si%3Anpm"/>
+  <a href="https://www.npmjs.com/package/package-radar">
+    <img alt="npm version" src="https://badge.fury.io/js/package-radar.svg?icon=si%3Anpm"/>
   </a>
   <a title="License" href="https://github.com/watadarkstar/code-radar/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -67,9 +67,9 @@ Worth testing.
 - Looks up latest versions on npm
 - Uses OpenAI web search for **major** package/framework news
 - Source links on every item (blogs, changelogs, GitHub Releases)
-- Saves your OpenAI API key locally (`~/.code-radar/`) and protects project `.gitignore`
+- Saves your OpenAI API key locally (`~/.package-radar/`) and protects project `.gitignore`
 
-Code Radar focuses on major news — not security audits or CVE noise.
+Package Radar focuses on major news — not security audits or CVE noise.
 
 ## Requirements
 
@@ -81,19 +81,19 @@ Code Radar focuses on major news — not security audits or CVE noise.
 Using npm:
 
 ```bash
-npm install -g code-radar
+npm install -g package-radar
 ```
 
 Using yarn:
 
 ```bash
-yarn global add code-radar
+yarn global add package-radar
 ```
 
 Or run once without installing:
 
 ```bash
-npx code-radar
+npx package-radar
 ```
 
 ## Usage
@@ -101,16 +101,16 @@ npx code-radar
 From any Node project directory:
 
 ```bash
-code-radar
+package-radar
 ```
 
-First run prompts for your OpenAI API key (saved to `~/.code-radar/config.json`). You can also set `OPENAI_API_KEY` in the environment.
+First run prompts for your OpenAI API key (saved to `~/.package-radar/config.json`). You can also set `OPENAI_API_KEY` in the environment.
 
 ```bash
-code-radar config          # save / update API key
-code-radar config --show   # check if a key is configured
-code-radar config --clear  # remove saved key
-code-radar --help
+package-radar config          # save / update API key
+package-radar config --show   # check if a key is configured
+package-radar config --clear  # remove saved key
+package-radar --help
 ```
 
 ### What happens on each run
@@ -119,7 +119,7 @@ code-radar --help
 2. **Registry** — latest versions on npm for detected packages  
 3. **News** — OpenAI web search for major announcements  
 4. **Report** — why it matters, recommendation, and source URLs  
-5. **Safety** — appends `.code-radar/` to the project `.gitignore` if missing  
+5. **Safety** — appends `.package-radar/` to the project `.gitignore` if missing  
 
 ### Config & environment
 
@@ -127,9 +127,9 @@ code-radar --help
 | --- | --- | --- |
 | `OPENAI_API_KEY` | Yes* | Overrides the saved key when set. [Get a key](https://platform.openai.com/api-keys). |
 | `OPENAI_MODEL` | No | Model name (default: `gpt-4.1-mini`). |
-| `~/.code-radar/config.json` | — | Where the API key is stored after `code-radar config`. |
+| `~/.package-radar/config.json` | — | Where the API key is stored after `package-radar config`. |
 
-\*Required either as env var or via `code-radar config`.
+\*Required either as env var or via `package-radar config`.
 
 ## Local development
 
@@ -180,7 +180,7 @@ yarn run release:dry
 yarn run release
 ```
 
-`release:dry` prints what would happen without publishing. `release` bumps the version, runs typecheck + build, commits/tags, creates a GitHub release, and publishes `code-radar` to the npm registry.
+`release:dry` prints what would happen without publishing. `release` bumps the version, runs typecheck + build, commits/tags, creates a GitHub release, and publishes `package-radar` to the npm registry.
 
 ---
 
@@ -196,4 +196,4 @@ _Built with ❤️ by [Adrian](https://x.com/icookandcode)_
 
 ---
 
-**Keywords:** cli, code-radar, package news, dependencies, changelog, npm, openai, typescript, developer-tools
+**Keywords:** cli, package-radar, package news, dependencies, changelog, npm, openai, typescript, developer-tools

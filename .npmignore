@@ -13,6 +13,7 @@
 
 # Local / generated
 /node_modules/
+/.package-radar/
 /.code-radar/
 *.log
 .DS_Store

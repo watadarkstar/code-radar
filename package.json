@@ -1,11 +1,11 @@
 {
-  "name": "code-radar",
+  "name": "package-radar",
   "version": "0.0.1",
   "description": "Weekly package news for your stack — with source links",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "code-radar": "./dist/index.js"
+    "package-radar": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -27,7 +27,7 @@
   },
   "keywords": [
     "cli",
-    "code-radar",
+    "package-radar",
     "dependencies",
     "package-news",
     "changelog",

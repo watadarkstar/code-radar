@@ -97,7 +97,7 @@ const PACKAGE_NEWS_HOMES: Record<string, { label: string; url: string }> = {
   },
 };
 
-const SYSTEM_PROMPT = `You are Code Radar, a developer news briefing tool.
+const SYSTEM_PROMPT = `You are Package Radar, a developer news briefing tool.
 
 Given a scanned Node/JS/TS project, search the web for MAJOR recent package/framework NEWS that is relevant to the detected stack.
 
@@ -174,7 +174,7 @@ function buildUserPrompt(input: {
     ),
   };
 
-  return `Search for major package news relevant to this project, then produce a Code Radar news briefing as JSON.
+  return `Search for major package news relevant to this project, then produce a Package Radar news briefing as JSON.
 
 Project context:
 ${JSON.stringify(context, null, 2)}

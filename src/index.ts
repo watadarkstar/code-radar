@@ -11,13 +11,13 @@ import { findProjectRoot, scanProject } from "./scan";
 import { fetchLatestVersions } from "./versions";
 
 function printHelp(): void {
-  console.log(`code-radar — package news for your codebase
+  console.log(`package-radar — package news for your codebase
 
 Usage:
-  code-radar                 Scan current project and print this week's news radar
-  code-radar config          Prompt and save your OpenAI API key
-  code-radar config --show   Show whether a key is configured (does not print the key)
-  code-radar --help          Show this help
+  package-radar                 Scan current project and print this week's news radar
+  package-radar config          Prompt and save your OpenAI API key
+  package-radar config --show   Show whether a key is configured (does not print the key)
+  package-radar --help          Show this help
 
 What it does:
   Detects your stack from package.json, looks up npm versions, then uses OpenAI
@@ -59,7 +59,7 @@ async function runConfig(args: string[]): Promise<void> {
     const gitignore = await ensureGitignoreHasSecretsEntry(root);
     if (gitignore.updated) {
       console.log(
-        `Added .code-radar/ to ${gitignore.gitignorePath} so API keys are not committed.`,
+        `Added .package-radar/ to ${gitignore.gitignorePath} so API keys are not committed.`,
       );
     }
   } catch {
@@ -75,7 +75,7 @@ async function runRadar(): Promise<void> {
   const gitignore = await ensureGitignoreHasSecretsEntry(scan.projectRoot);
   if (gitignore.updated) {
     console.log(
-      `Added .code-radar/ to ${gitignore.gitignorePath} so API keys are not committed.\n`,
+      `Added .package-radar/ to ${gitignore.gitignorePath} so API keys are not committed.\n`,
     );
   }
 

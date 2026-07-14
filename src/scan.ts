@@ -194,7 +194,7 @@ export async function findProjectRoot(
       const parent = path.dirname(dir);
       if (parent === dir) {
         throw new Error(
-          "No package.json found. Run code-radar from inside a Node project.",
+          "No package.json found. Run package-radar from inside a Node project.",
         );
       }
       dir = parent;
