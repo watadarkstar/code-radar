@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+
+# OpenAI / code-radar secrets — never commit API keys
+.code-radar/

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+    // tsup's dts path injects baseUrl; silence that until tsup stops doing so
+    // this is fine to error as its only supported on TS 6
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src"]
+}

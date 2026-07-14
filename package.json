@@ -1,0 +1,40 @@
+{
+  "name": "code-radar",
+  "version": "1.0.0",
+  "description": "CLI that scans your package.json and surfaces major package/framework news with source links",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "code-radar": "./dist/index.js"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsup",
+    "start": "tsx src/index.ts",
+    "dev": "tsx src/index.ts",
+    "radar": "tsx src/index.ts"
+  },
+  "keywords": [
+    "cli",
+    "dependencies",
+    "news",
+    "changelog",
+    "openai"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^6.46.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "tslib": "^2.8.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.22.4",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
